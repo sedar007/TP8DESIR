@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TableLayout;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultCallback;
@@ -36,7 +38,10 @@ public class MainActivity extends ImageLoader {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTableLayoutVisible(false);
+        setInconnuVisibility(false);
     }
+
 
     public void onImageUpload(View view){
         mGetResult.launch(LAUNCH_IMAGE_INPUT);
@@ -68,10 +73,10 @@ public class MainActivity extends ImageLoader {
             if (exif.getLatLong(latLong)) {
                 showLongLat(latLong);
             } else {
-                Log.d("MainActivity", "No GPS EXIF data found");
+                setInconnuVisibility(true);
+                setTableLayoutVisible(false);
             }
         } catch (IOException e) {
-            Log.e("MainActivity", "Failed reading EXIF", e);
         }
     }
 

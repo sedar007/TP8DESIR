@@ -5,6 +5,7 @@
     <string name="longitude">longitude</string>
     <string name="error_upload_image">Une erreur s\'est produite, impossible de charger l\'image</string>
     <string name="error_no_image">Aucune image n\'a été chargée</string>
+    <string name="inconnu">Inconnu</string>
 
 
 </resources>

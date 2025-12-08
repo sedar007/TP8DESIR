@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +18,25 @@ public class ImageLoader extends AppCompatActivity {
     protected TextView getLongTextView(){
         return findViewById(R.id.longitude_editText);
     }
+    protected TextView getInconnuTextView(){
+        return findViewById(R.id.inconnu_label);
+    }
+    protected void setTextViewVisible(TextView tv, boolean visible) {
+        // affiche ou masque la TextView
+        if (tv == null) return;
+        tv.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    protected void setTableLayoutVisible( boolean visible) {
+        setTextViewVisible(getLongTextView(), visible);
+        setTextViewVisible(getLatTextView(), visible);
+        setTextViewVisible(findViewById(R.id.longitude_label), visible);
+        setTextViewVisible(findViewById(R.id.latitude_label), visible);
+    }
+    protected void setInconnuVisibility(boolean visible){
+        setTextViewVisible(getInconnuTextView(), visible);
+    }
+
     protected TextView getLatTextView(){
         return findViewById(R.id.latitude_editText);
     }
@@ -24,12 +44,18 @@ public class ImageLoader extends AppCompatActivity {
         return findViewById(R.id.imageView);
     }
     protected void showLongLat(final float[] latLong){
-
+        if (latLong == null || latLong.length < 2) {
+            return;
+        }
         String latitude = String.valueOf(latLong[1]);
         String longitude = String.valueOf(latLong[0]);
         getLongTextView().setText(longitude);
         getLatTextView().setText(latitude);
+        setTableLayoutVisible(true);
+        setInconnuVisibility(false);
     }
+
+
 
     protected void loadImage(final Uri imageUri){
         // ----- préparer les options de chargement de l’image

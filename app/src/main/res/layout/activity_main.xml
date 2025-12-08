@@ -45,6 +45,7 @@
         app:layout_constraintVertical_bias="0.435" />
 
     <TableLayout
+        android:id="@+id/tableLayout"
         android:layout_width="287dp"
         android:layout_height="84dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -94,6 +95,18 @@
         </TableRow>
 
     </TableLayout>
+
+    <TextView
+        android:id="@+id/inconnu_label"
+        android:layout_width="139dp"
+        android:layout_height="28dp"
+        android:text="@string/inconnu"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.288" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
