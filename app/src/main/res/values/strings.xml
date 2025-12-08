@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TP8DESIR</string>
+    <string name="choisissez_une_image_charger">Choisissez une image à charger ...</string>
+    <string name="latitude">latitude</string>
+    <string name="longitude">longitude</string>
+    <string name="error_upload_image">Une erreur s\'est produite, impossible de charger l\'image</string>
+    <string name="error_no_image">Aucune image n\'a été chargée</string>
+
+
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="choisissez_une_image_charger">Choisissez une image à charger ...</string>
+    <string name="latitude">latitude</string>
+    <string name="longitude">longitude</string>
+</resources>
