@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,15 @@ public class ImageLoader extends AppCompatActivity {
         setTextViewVisible(getLatTextView(), visible);
         setTextViewVisible(findViewById(R.id.longitude_label), visible);
         setTextViewVisible(findViewById(R.id.latitude_label), visible);
+        ImageButton imageButton = findViewById(R.id.imageGeo);
+
+        if(visible){
+            imageButton.setVisibility(View.VISIBLE);
+        }
+        else{
+            imageButton.setVisibility(View.GONE);
+
+        }
     }
     protected void setInconnuVisibility(boolean visible){
         setTextViewVisible(getInconnuTextView(), visible);

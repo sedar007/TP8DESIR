@@ -6,6 +6,14 @@
     <string name="error_upload_image">Une erreur s\'est produite, impossible de charger l\'image</string>
     <string name="error_no_image">Aucune image n\'a été chargée</string>
     <string name="inconnu">Inconnu</string>
+    <string name="text_view_latitude_text">Latitude</string>
+    <string name="text_view_longitude_text">Longitude</string>
+    <string name="invalid_latitude_toast">Latitude invalide</string>
+    <string name="invalid_longitude_toast">Longitude invalide</string>
+    <string name="empty_coordinates_toast">Coordonnées vides</string>
+    <string name="invalid_coordinates_toast">Coordonnées invalides</string>
+    <string name="no_app_available_toast">Aucune application disponible</string>
+
 
 
 </resources>
