@@ -1,10 +1,7 @@
 package fr.ulco.tp8desir;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -17,18 +14,11 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.appcompat.widget.Toolbar;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppPermissions {
     private final String LAUNCH_IMAGE_INPUT = "image/*";
