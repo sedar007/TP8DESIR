@@ -13,7 +13,7 @@
     <string name="empty_coordinates_toast">Coordonnées vides</string>
     <string name="invalid_coordinates_toast">Coordonnées invalides</string>
     <string name="no_app_available_toast">Aucune application disponible</string>
-
+    <string name="retour_l_accueil">Retour à l\'accueil</string>
 
 
 </resources>

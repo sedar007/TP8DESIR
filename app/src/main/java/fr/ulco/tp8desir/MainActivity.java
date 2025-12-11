@@ -1,13 +1,15 @@
 package fr.ulco.tp8desir;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.TableLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,7 +17,9 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -23,11 +27,17 @@ import androidx.appcompat.widget.Toolbar;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends ImageLoader {
+public class MainActivity extends AppPermissions {
     private final String LAUNCH_IMAGE_INPUT = "image/*";
-    private final static String GEO_URI = "geo:";
+    public final static String LONGITUDE_INTENT = "com.example.fichedesir.LONGITUDE" ;
+    public final static String LATITUDE_INTENT = "com.example.fichedesir.LATITUDE" ;
 
+    private final static String GEO_URI = "geo:";
+    private String longitude;
+    private String latitude;
 
 
     @Override
@@ -35,7 +45,7 @@ public class MainActivity extends ImageLoader {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.images_textView2), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -47,30 +57,41 @@ public class MainActivity extends ImageLoader {
         setInconnuVisibility(false);
         ImageButton imageButton = findViewById(R.id.imageGeo);
         imageButton.setVisibility(View.GONE);
-
-
-
     }
 
-
     public void onImageUpload(View view){
+        String[] permissions = {
+                Manifest.permission.ACCESS_MEDIA_LOCATION,
+        };
+        requestPermissions(permissions);
+
         mGetResult.launch(LAUNCH_IMAGE_INPUT);
+    }
+
+    public void onImageButtonShowList(View view){
+        String[] permissions = {
+                Manifest.permission.ACCESS_MEDIA_LOCATION,
+                Manifest.permission.READ_MEDIA_IMAGES,
+        };
+        requestPermissions(permissions);
+
+        Intent intent = new Intent(this, ImageListActivity.class);
+
+        if (longitude != null && latitude != null) {
+            intent.putExtra(LONGITUDE_INTENT, longitude);
+            intent.putExtra(LATITUDE_INTENT, latitude);
+        }
+
+        startActivity(intent);
     }
 
 
 
     public void onGetGeo(View view){
-
-        TextView latitudeView = getLatTextView();
-        String latitudeString = latitudeView.getText().toString();
-
-        TextView longitudeView = getLongTextView();
-        String longitudeString = longitudeView.getText().toString();
-
         // Vérification que les coordonnées sont valides
-        if(!isValidCoordinates(latitudeString, longitudeString))
+        if(!GeoManager.isValidCoordinates(this, latitude, longitude))
             return;
-        startActivity(GEO_URI + latitudeString + "," + longitudeString, Intent.ACTION_VIEW);
+        startActivity(GEO_URI + latitude + "," + longitude, Intent.ACTION_VIEW);
     }
 
 
@@ -82,35 +103,28 @@ public class MainActivity extends ImageLoader {
                 @Override
                 public void onActivityResult(Uri uri) {
                     if (uri == null) return;
-                    loadImage(uri);
-                    readLocation(uri);
-
+                    ImageView imageView = getImageView();
+                    ImageManager.loadImage(MainActivity.this, uri, imageView);
+                    LongLat latLong = GeoManager.readLocation(MainActivity.this, uri);
+                    if(latLong == null){
+                        setInconnuVisibility(true);
+                        setTableLayoutVisible(false);
+                    }
+                    else
+                        showLongLat(latLong);
                 }// onActivityResult
             }// ActivityResultCallback
     );// registerForActivityResult
 
-    private void readLocation(Uri uri) {
-        if (uri == null) return;
-        try (InputStream in = getContentResolver().openInputStream(uri)) {
-            if (in == null) {
-                return;
-            }
-            ExifInterface exif = new ExifInterface(in);
-            float[] latLong = new float[2];
-            if (exif.getLatLong(latLong)) {
-                showLongLat(latLong);
-            } else {
-                setInconnuVisibility(true);
-                setTableLayoutVisible(false);
-            }
-        } catch (IOException e) {
-        }
-    }
+
     private void startActivity(final String uriString, final String intentAction){
-        Intent intent = new Intent();
+        Intent intent = new Intent(this, ImageListActivity.class);
+        intent.putExtra(LONGITUDE_INTENT, longitude);
+        intent.putExtra(LATITUDE_INTENT, latitude);
         Uri uri = Uri.parse(uriString);
         intent.setData(uri);
         intent.setAction(intentAction);
+
 
         startActivity_(intent);
     }
@@ -124,27 +138,59 @@ public class MainActivity extends ImageLoader {
         finish();
     }
 
-    private Boolean isValidCoordinates(String latitude, String longitude){
-
-        try {
-            double lat = Double.parseDouble(latitude);
-            double lon = Double.parseDouble(longitude);
-
-            if(lat < -90 || lat > 90){
-                Toast.makeText(this, getString(R.string.invalid_latitude_toast), Toast.LENGTH_SHORT).show();
-                return false;
-            }
-
-            if(lon < -180 || lon > 180){
-                Toast.makeText(this, getString(R.string.invalid_longitude_toast), Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            Toast.makeText(this, getString(R.string.invalid_coordinates_toast), Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        return true;
+    private TextView getLongTextView(){
+        return findViewById(R.id.longitude_editText);
     }
+    private TextView getInconnuTextView(){
+        return findViewById(R.id.inconnu_label);
+    }
+    private void setTextViewVisible(TextView tv, boolean visible) {
+        // affiche ou masque la TextView
+        if (tv == null) return;
+        tv.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    private void setInconnuVisibility(boolean visible){
+        setTextViewVisible(getInconnuTextView(), visible);
+    }
+    private TextView getLatTextView(){
+        return findViewById(R.id.latitude_editText);
+    }
+    protected ImageView getImageView(){
+        return findViewById(R.id.imageView);
+    }
+
+
+    private void setTableLayoutVisible( boolean visible) {
+        setTextViewVisible(getLongTextView(), visible);
+        setTextViewVisible(getLatTextView(), visible);
+        setTextViewVisible(findViewById(R.id.longitude_label), visible);
+        setTextViewVisible(findViewById(R.id.latitude_label), visible);
+        ImageButton imageButton = findViewById(R.id.imageGeo);
+        ImageButton imageButtonShowList = findViewById(R.id.imageButtonShowList);
+
+        if(visible){
+            imageButton.setVisibility(View.VISIBLE);
+            imageButtonShowList.setVisibility(View.VISIBLE);
+        }
+        else{
+            imageButton.setVisibility(View.GONE);
+            imageButtonShowList.setVisibility(View.GONE);
+
+        }
+    }
+
+    private void showLongLat(final LongLat latLong){
+        if (latLong == null) {
+            return;
+        }
+        latitude = String.valueOf(latLong.getLatitude());
+        longitude = String.valueOf(latLong.getLongitude());
+        getLongTextView().setText(longitude);
+        getLatTextView().setText(latitude);
+        setTableLayoutVisible(true);
+        setInconnuVisibility(false);
+    }
+
 
 }
