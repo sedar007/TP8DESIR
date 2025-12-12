@@ -48,6 +48,10 @@ public class SearchActivity extends LocationAppActivity {
             return;
         }
         Location location = getLocation();
+        if(location == null){
+            editTextDistance.setError("Impossible de récupérer la localisation");
+            return;
+        }
         Double longitude = location.getLongitude();
         Double latitude = location.getLatitude();
 
