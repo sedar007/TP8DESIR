@@ -22,7 +22,7 @@ public class GeoManager {
             ExifInterface exif = new ExifInterface(in);
             float[] latLong = new float[2];
             if (exif.getLatLong(latLong))
-                return new LongLat(latLong[0], latLong[1]);
+                return new LongLat((double) latLong[0], (double) latLong[1]);
         } catch (IOException e) {
         }
         return null;
@@ -51,7 +51,7 @@ public class GeoManager {
     }
 
 
-    public static double distanceOrthodromique(Float lat1, Float lon1, Float lat2, Float lon2) {
+    public static double distanceOrthodromique(Double lat1, Double lon1, Double lat2, Double lon2) {
 
         // Conversion degrés → radians
         double lat1Rad = Math.toRadians(lat1);

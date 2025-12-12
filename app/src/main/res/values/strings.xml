@@ -14,6 +14,10 @@
     <string name="invalid_coordinates_toast">Coordonnées invalides</string>
     <string name="no_app_available_toast">Aucune application disponible</string>
     <string name="retour_l_accueil">Retour à l\'accueil</string>
+    <string name="rechercher_les_images_a_x_distances_de_moi">Rechercher les images a x distances de moi</string>
+    <string name="distance_en_km">Distance en km</string>
+    <string name="rechercher">Rechercher</string>
+    <string name="retour">Retour</string>
 
 
 </resources>

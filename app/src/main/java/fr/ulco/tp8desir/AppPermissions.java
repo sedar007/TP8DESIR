@@ -36,6 +36,10 @@ public class AppPermissions extends AppCompatActivity {
         }
     }
 
+    protected boolean hasPermission(String permission) {
+        return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,

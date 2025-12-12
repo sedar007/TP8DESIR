@@ -41,6 +41,12 @@ public class MainActivity extends AppPermissions {
             return insets;
         });
 
+        String[] permissions = {
+                Manifest.permission.ACCESS_MEDIA_LOCATION,
+                Manifest.permission.READ_MEDIA_IMAGES,
+        };
+        requestPermissions(permissions);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTableLayoutVisible(false);
@@ -50,38 +56,45 @@ public class MainActivity extends AppPermissions {
     }
 
     public void onImageUpload(View view){
-        String[] permissions = {
-                Manifest.permission.ACCESS_MEDIA_LOCATION,
-        };
-        requestPermissions(permissions);
-
         mGetResult.launch(LAUNCH_IMAGE_INPUT);
     }
 
-    public void onImageButtonShowList(View view){
-        String[] permissions = {
-                Manifest.permission.ACCESS_MEDIA_LOCATION,
-                Manifest.permission.READ_MEDIA_IMAGES,
-        };
-        requestPermissions(permissions);
 
+    public void onImageButtonShowList(View view){
         Intent intent = new Intent(this, ImageListActivity.class);
 
         if (longitude != null && latitude != null) {
             intent.putExtra(LONGITUDE_INTENT, longitude);
             intent.putExtra(LATITUDE_INTENT, latitude);
         }
-
         startActivity(intent);
     }
-
-
 
     public void onGetGeo(View view){
         // Vérification que les coordonnées sont valides
         if(!GeoManager.isValidCoordinates(this, latitude, longitude))
             return;
-        startActivity(GEO_URI + latitude + "," + longitude, Intent.ACTION_VIEW);
+
+        Intent intent = new Intent();
+        intent.putExtra(LONGITUDE_INTENT, longitude);
+        intent.putExtra(LATITUDE_INTENT, latitude);
+        Uri uri = Uri.parse(GEO_URI + latitude + "," + longitude);
+        intent.setData(uri);
+        intent.setAction(Intent.ACTION_VIEW);
+
+        try{
+            startActivity(intent);
+        } catch (Exception e){
+            Toast.makeText(this, getString(R.string.no_app_available_toast), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        finish();
+    }
+
+    public void onDistanceImageList(View view) {
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
+
     }
 
 
@@ -106,27 +119,6 @@ public class MainActivity extends AppPermissions {
             }// ActivityResultCallback
     );// registerForActivityResult
 
-
-    private void startActivity(final String uriString, final String intentAction){
-        Intent intent = new Intent(this, ImageListActivity.class);
-        intent.putExtra(LONGITUDE_INTENT, longitude);
-        intent.putExtra(LATITUDE_INTENT, latitude);
-        Uri uri = Uri.parse(uriString);
-        intent.setData(uri);
-        intent.setAction(intentAction);
-
-
-        startActivity_(intent);
-    }
-    private void startActivity_(Intent intent){
-        try{
-            startActivity(intent);
-        } catch (Exception e){
-            Toast.makeText(this, getString(R.string.no_app_available_toast), Toast.LENGTH_SHORT).show();
-            return;
-        }
-        finish();
-    }
 
     private TextView getLongTextView(){
         return findViewById(R.id.longitude_editText);

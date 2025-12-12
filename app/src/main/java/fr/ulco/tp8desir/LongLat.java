@@ -1,18 +1,18 @@
 package fr.ulco.tp8desir;
 
 public class LongLat {
-    private final Float longitude;
-    private final Float latitude;
+    private final Double longitude;
+    private final Double latitude;
 
-    public LongLat(Float longitude, Float latitude) {
+    public LongLat(Double longitude, Double latitude) {
         this.longitude = longitude;
         this.latitude = latitude;
     }
 
-    public Float getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
-    public Float getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 

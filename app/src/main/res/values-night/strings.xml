@@ -5,4 +5,7 @@
     <string name="longitude">longitude</string>
     <string name="inconnu">Inconnu</string>
     <string name="retour_l_accueil">Retour à l\'accueil</string>
+    <string name="distance_en_km">Distance en km</string>
+    <string name="rechercher">Rechercher</string>
+    <string name="retour">Retour</string>
 </resources>
