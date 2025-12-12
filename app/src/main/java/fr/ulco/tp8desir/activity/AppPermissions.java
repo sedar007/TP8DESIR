@@ -1,4 +1,4 @@
-package fr.ulco.tp8desir;
+package fr.ulco.tp8desir.activity;
 
 import android.content.pm.PackageManager;
 import android.widget.Toast;

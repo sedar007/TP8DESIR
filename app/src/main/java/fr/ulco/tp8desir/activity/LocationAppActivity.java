@@ -1,4 +1,4 @@
-package fr.ulco.tp8desir;
+package fr.ulco.tp8desir.activity;
 
 import android.Manifest;
 import android.content.Context;
@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
 
-public class LocationAppActivity extends AppPermissions{
+public class LocationAppActivity extends AppPermissions {
 
     private Location userLocation;
     @Override

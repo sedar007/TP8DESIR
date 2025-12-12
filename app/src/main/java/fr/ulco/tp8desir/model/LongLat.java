@@ -1,4 +1,4 @@
-package fr.ulco.tp8desir;
+package fr.ulco.tp8desir.model;
 
 public class LongLat {
     private final Double longitude;

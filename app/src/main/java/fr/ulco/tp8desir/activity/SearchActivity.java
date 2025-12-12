@@ -1,9 +1,5 @@
-package fr.ulco.tp8desir;
+package fr.ulco.tp8desir.activity;
 
-import static fr.ulco.tp8desir.MainActivity.LATITUDE_INTENT;
-import static fr.ulco.tp8desir.MainActivity.LONGITUDE_INTENT;
-
-import android.Manifest;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -11,17 +7,18 @@ import android.view.View;
 import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
+import java.util.ArrayList;
+
+import fr.ulco.tp8desir.DistanceManager;
+import fr.ulco.tp8desir.IListManager;
+import fr.ulco.tp8desir.model.ImageItem;
+import fr.ulco.tp8desir.R;
 
 public class SearchActivity extends LocationAppActivity {
-    public final static String DISTANCE_INTENT = "com.example.fichedesir.DISTANCE_INTENT" ;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +32,6 @@ public class SearchActivity extends LocationAppActivity {
         });
 
     }
-
 
     public void onClickGoToMainActivity(View view){
         finish();
@@ -55,11 +51,11 @@ public class SearchActivity extends LocationAppActivity {
         Double longitude = location.getLongitude();
         Double latitude = location.getLatitude();
 
-        Intent intent = new Intent(this, DistanceListActivity.class);
-        intent.putExtra(LONGITUDE_INTENT, longitude);
-        intent.putExtra(LATITUDE_INTENT, latitude);
-        intent.putExtra(DISTANCE_INTENT, xDistance);
+        Intent intent = new Intent(this, ListActivity.class);
 
+        DistanceManager distanceManager = new DistanceManager(longitude, latitude, xDistance, this);
+        ArrayList<ImageItem> images = distanceManager.getImagesList();
+        intent.putParcelableArrayListExtra(IListManager.PICTURE_LIST, images);
         startActivity(intent);
     }
 

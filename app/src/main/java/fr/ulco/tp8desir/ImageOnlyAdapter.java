@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+import fr.ulco.tp8desir.model.ImageItem;
+
 public class ImageOnlyAdapter extends ArrayAdapter<ImageItem> {
     public ImageOnlyAdapter(Context context, ArrayList<ImageItem> images) {
         super(context, 0, images);

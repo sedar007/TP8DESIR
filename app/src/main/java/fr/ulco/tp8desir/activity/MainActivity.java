@@ -1,4 +1,4 @@
-package fr.ulco.tp8desir;
+package fr.ulco.tp8desir.activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -19,15 +19,24 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.ArrayList;
+
+import fr.ulco.tp8desir.GeoManager;
+import fr.ulco.tp8desir.IListManager;
+import fr.ulco.tp8desir.model.ImageItem;
+import fr.ulco.tp8desir.ImageListManager;
+import fr.ulco.tp8desir.ImageManager;
+import fr.ulco.tp8desir.model.LongLat;
+import fr.ulco.tp8desir.R;
+
 
 public class MainActivity extends AppPermissions {
     private final String LAUNCH_IMAGE_INPUT = "image/*";
     public final static String LONGITUDE_INTENT = "com.example.fichedesir.LONGITUDE" ;
     public final static String LATITUDE_INTENT = "com.example.fichedesir.LATITUDE" ;
-
     private final static String GEO_URI = "geo:";
-    private String longitude;
-    private String latitude;
+    private Double longitude;
+    private Double latitude;
 
 
     @Override
@@ -61,12 +70,15 @@ public class MainActivity extends AppPermissions {
 
 
     public void onImageButtonShowList(View view){
-        Intent intent = new Intent(this, ImageListActivity.class);
+        Intent intent = new Intent(this, ListActivity.class);
 
-        if (longitude != null && latitude != null) {
-            intent.putExtra(LONGITUDE_INTENT, longitude);
-            intent.putExtra(LATITUDE_INTENT, latitude);
+        if (longitude == null && latitude == null) {
+          return;
         }
+
+        ImageListManager imageListManager = new ImageListManager(longitude, latitude, this);
+        ArrayList<ImageItem> images = imageListManager.getImagesList();
+        intent.putParcelableArrayListExtra(IListManager.PICTURE_LIST, images);
         startActivity(intent);
     }
 
@@ -166,10 +178,10 @@ public class MainActivity extends AppPermissions {
         if (latLong == null) {
             return;
         }
-        latitude = String.valueOf(latLong.getLatitude());
-        longitude = String.valueOf(latLong.getLongitude());
-        getLongTextView().setText(longitude);
-        getLatTextView().setText(latitude);
+        latitude = latLong.getLatitude();
+        longitude = latLong.getLongitude();
+        getLongTextView().setText(String.valueOf(longitude));
+        getLatTextView().setText(String.valueOf(latitude));
         setTableLayoutVisible(true);
         setInconnuVisibility(false);
     }

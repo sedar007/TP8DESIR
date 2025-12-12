@@ -8,6 +8,8 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.io.InputStream;
 
+import fr.ulco.tp8desir.model.LongLat;
+
 public class GeoManager {
 
     // Rayon moyen de la Terre en mètres
@@ -28,17 +30,16 @@ public class GeoManager {
         return null;
     }
 
-    public static Boolean isValidCoordinates(Activity activity, String latitude, String longitude) {
+    public static Boolean isValidCoordinates(Activity activity, Double latitude, Double longitude) {
         try {
-            double lat = Double.parseDouble(latitude);
-            double lon = Double.parseDouble(longitude);
 
-            if(lat < -90 || lat > 90){
+
+            if(latitude < -90 || latitude > 90){
                 Toast.makeText(activity, activity.getString(R.string.invalid_latitude_toast), Toast.LENGTH_SHORT).show();
                 return false;
             }
 
-            if(lon < -180 || lon > 180){
+            if(longitude < -180 || longitude > 180){
                 Toast.makeText(activity, activity.getString(R.string.invalid_longitude_toast), Toast.LENGTH_SHORT).show();
                 return false;
             }

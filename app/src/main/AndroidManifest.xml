@@ -17,10 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TP8DESIR">
         <activity
-            android:name=".ListActivity"
+            android:name=".activity.ListActivity"
             android:exported="false" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".activity.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".DistanceListActivity"
@@ -29,7 +29,7 @@
             android:name=".ImageListActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

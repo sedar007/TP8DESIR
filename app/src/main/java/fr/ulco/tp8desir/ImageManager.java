@@ -64,4 +64,13 @@ public class ImageManager {
         return imagesList;
     }
 
+    public static ArrayList<Uri> getImages(Double longitude, Double latitude, Activity activity) {
+        if(longitude== null || latitude == null){
+            Toast.makeText(activity, "Longitude ou latitude manquante", Toast.LENGTH_LONG).show();
+            return null;
+        }
+
+        return loadImagesFromGallery(activity);
+    }
+
 }
